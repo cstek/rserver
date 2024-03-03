@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.conf import settings
 
 
 class User(AbstractUser):
@@ -12,6 +13,7 @@ class User(AbstractUser):
 
 class Tag(models.Model):
     tag_id = models.CharField(max_length=100, unique=True)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True, blank=True)
     create_time = models.DateTimeField(auto_now_add=True)
     tag_status = models.CharField(max_length=50)
 
