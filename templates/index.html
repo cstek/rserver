@@ -10,5 +10,29 @@
 <body>
 <h1>student manage system homepage</h1>
 <h2>{{ msg }}</h2>
+
+<div>
+        <ul>
+            {% if user.is_authenticated %}
+            <li>Hi, {{ user.username }}!</li>
+            <li>your user_id: {{ user.user_id }}</li>
+            {% if tag_ids %}
+                <li>Your tags:</li>
+            <ul>
+                {% for tag_id in tag_ids %}
+                    <li>{{ tag_id }}</li>
+                {% endfor %}
+            </ul>
+            {% else %}
+            <li>You do not have any associated tags.</li>
+            <li><a href="{% url 'attach' %}">Attach with a Tag</a></li>
+            {% endif %}
+            <li><a href="{% url 'logout' %}">Logout</a></li>
+            {% else %}
+            <li><a href="{% url 'login' %}">Login</a></li>
+            {% endif %}
+        </ul>
+    </div>
+
 </body>
 </html>
