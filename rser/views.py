@@ -93,5 +93,6 @@ def sendToEsp32(request):
     publish.single(topic, payload, hostname='localhost')  # 如果MQTT服务器不在本地，请更改hostname
     return HttpResponse('sent payload')
 
+
 def testMsg(request):
     return HttpResponse("TEST MESSAGE")

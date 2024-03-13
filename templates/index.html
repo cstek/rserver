@@ -5,36 +5,62 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>Student Management System</title>
+    <!-- 引入Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 </head>
 <body>
-<h1>student manage system homepage</h1>
-<h2>{{ msg }}</h2>
+<div class="container mt-5">
+    <h1 class="mb-3">Student Management System Homepage</h1>
+    <h2>{{ msg }}</h2>
 
-<div>
-        <ul>
+    <div class="user-info mt-4">
+        <ul class="list-unstyled">
             {% if user.is_authenticated %}
-            <li>Hi, {{ user.username }}!</li>
-            <li>your user_id: {{ user.user_id }}</li>
+            <li>Hi, <strong>{{ user.username }}</strong>!</li>
+            <li>Your user ID: <strong>{{ user.user_id }}</strong></li>
             {% if tag_ids %}
                 <li>Your tags:</li>
-            <ul>
-                {% for tag_id in tag_ids %}
-                    <li>{{ tag_id }}</li>
-                {% endfor %}
-            </ul>
+                <ul>
+                    {% for tag_id in tag_ids %}
+                        <li>{{ tag_id }}</li>
+                    {% endfor %}
+                </ul>
             {% else %}
-            <li>You do not have any associated tags.</li>
-            <li><a href="{% url 'attach' %}">Attach with a Tag</a></li>
+                <li>You do not have any associated tags.</li>
+                <li><a href="{% url 'attach' %}">Attach with a Tag</a></li>
             {% endif %}
-            <li><a href="{% url 'logout' %}">Logout</a></li>
+            <li><a href="{% url 'logout' %}" class="btn btn-primary mt-2">Logout</a></li>
             {% else %}
-            <li><a href="{% url 'login' %}">Login</a></li>
+            <li><a href="{% url 'login' %}" class="btn btn-primary mt-2">Login</a></li>
             {% endif %}
         </ul>
     </div>
-<div>
-    <a href="{% url 'sendToEsp32' %}">sendToEsp32</a>
+    <div class="mt-4">
+        <button id="sendToEsp32" class="btn btn-success">Send to ESP32</button>
+    </div>
 </div>
+
+<!-- 引入Bootstrap JS 和 jQuery -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+<script>
+$(document).ready(function() {
+    $('#sendToEsp32').click(function() {
+        $.ajax({
+            url: '{% url 'sendToEsp32' %}',
+            type: 'get', // 或者 'post'，取决于你的URL处理方式
+            success: function(response) {
+                alert('Data has been sent to ESP32 successfully!');
+            },
+            error: function() {
+                alert('Failed to send data to ESP32.');
+            }
+        });
+    });
+});
+</script>
+
 </body>
 </html>
