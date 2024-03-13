@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-4t0wyhrr)=!d_h6z&6t*v&hu3)8v&v&4bdly%d0nb$uxi&qaz1
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['esp32rfid.top', 'www.esp32rfid.top', '43.128.27.152', '127.0.0.1']
 
 
 # Application definition
