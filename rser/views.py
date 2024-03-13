@@ -14,7 +14,7 @@ import paho.mqtt.publish as publish
 
 def home(request):
     template = loader.get_template('index.html')
-    msg = 'this is test home message'
+    msg = 'test home message'
     if request.user.is_authenticated:
         # 获取当前登录用户关联的所有标签的tag_id列表
         tag_ids = Tag.objects.filter(user=request.user).values_list('tag_id', flat=True)
