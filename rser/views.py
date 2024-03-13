@@ -9,6 +9,7 @@ from django.template import loader
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from rser.models import User, Tag, Log
+import paho.mqtt.publish as publish
 
 
 def home(request):
@@ -85,6 +86,12 @@ def createLog(user, tag, event):
     log.save()
     return HttpResponse("log created")
 
+
+def sendToEsp32(request):
+    topic = 'fromServer'
+    payload = 'hello wood'
+    publish.single(topic, payload, hostname='localhost')  # 如果MQTT服务器不在本地，请更改hostname
+    return HttpResponse('sent payload')
 
 def testMsg(request):
     return HttpResponse("TEST MESSAGE")

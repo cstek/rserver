@@ -10,5 +10,6 @@ urlpatterns = [
     path('login/', views.logIn, name='login'),
     path('logout/', views.logOut, name='logout'),
     path('attach/', views.attach, name='attach'),
+    path('sendToEsp32/', views.sendToEsp32, name='sendToEsp32'),
 
 ]
