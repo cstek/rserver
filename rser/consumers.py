@@ -1,37 +1,37 @@
 # consumer.py 处理 WebSocket 连接、接收消息和发送消息
 from channels.generic.websocket import AsyncWebsocketConsumer
 import json
-import asyncio
+from asgiref.sync import async_to_sync
 import paho.mqtt.client as mqtt
 
 
 class MyConsumer(AsyncWebsocketConsumer):
+    mqtt_client = None  # 定义MQTT客户端为类变量
+
     async def connect(self):
         await self.accept()
-        # 在新线程中启动MQTT客户端
-        asyncio.get_event_loop().run_in_executor(None, self.mqtt_client)
 
-    def mqtt_client(self):
+        # 使用async_to_sync包装器调用同步方法
+        if not MyConsumer.mqtt_client:
+            async_to_sync(self.setup_mqtt_client)()
+
+    def setup_mqtt_client(self):
         def on_message(client, userdata, message):
             # 当MQTT接收到消息时，将其发送到WebSocket
-            # 注意这里我们需要捕捉异常，因为这个回调是在另一个线程中执行的
             try:
-                loop = asyncio.new_event_loop()
-                asyncio.set_event_loop(loop)
-
-                loop.run_until_complete(self.send(text_data=json.dumps({'message': message.payload.decode()})))
+                # 注意，这里使用了async_to_sync包装器
+                async_to_sync(self.send)(text_data=json.dumps({'message': message.payload.decode()}))
             except Exception as e:
                 print(f"Error sending message: {e}")
 
-        client = mqtt.Client()
-        client.on_message = on_message
-        client.connect("localhost", 1883, 60)
-
-        # 订阅你想要监听的主题
-        client.subscribe("fromEsp")
-
-        client.loop_forever()
+        MyConsumer.mqtt_client = mqtt.Client(callback_api_version=mqtt.CallbackAPIVersion.VERSION2)
+        MyConsumer.mqtt_client.on_message = on_message
+        MyConsumer.mqtt_client.connect("localhost", 1883, 60)
+        MyConsumer.mqtt_client.subscribe("fromEsp")
+        MyConsumer.mqtt_client.loop_start()  # 使用loop_start而不是loop_forever
 
     async def disconnect(self, close_code):
-        # 断开连接时的操作
-        pass
+        if MyConsumer.mqtt_client:
+            MyConsumer.mqtt_client.loop_stop()  # 停止MQTT客户端循环
+            MyConsumer.mqtt_client.disconnect()  # 断开MQTT客户端连接
+            MyConsumer.mqtt_client = None
