@@ -1,3 +1,4 @@
+# mqtt_client.py
 import paho.mqtt.client as mqtt
 
 # MQTT服务器设置
@@ -12,7 +13,7 @@ def on_message(client, userdata, message):
 
 
 # 创建MQTT客户端实例
-client = mqtt.Client()
+client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION1)
 
 # 指定回调函数
 client.on_message = on_message
