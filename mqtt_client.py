@@ -13,7 +13,7 @@ def on_message(client, userdata, message):
 
 
 # 创建MQTT客户端实例
-client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION1)
+client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2)
 
 # 指定回调函数
 client.on_message = on_message

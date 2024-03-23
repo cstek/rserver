@@ -24,7 +24,7 @@ class MyConsumer(AsyncWebsocketConsumer):
             except Exception as e:
                 print(f"Error sending message: {e}")
 
-        MyConsumer.mqtt_client = mqtt.Client(callback_api_version=mqtt.CallbackAPIVersion.VERSION1)
+        MyConsumer.mqtt_client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2)
         MyConsumer.mqtt_client.on_message = on_message
         MyConsumer.mqtt_client.connect("localhost", 1883, 60)
         MyConsumer.mqtt_client.subscribe("fromEsp")
