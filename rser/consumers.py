@@ -6,8 +6,7 @@ import paho.mqtt.client as mqtt
 
 
 class MyConsumer(AsyncWebsocketConsumer):
-    def connect(self):
-        async_to_sync(self.send)(text_data=json.dumps({'message': 'aaaaaaaaabbbbbbbbbbbb'}))
+    pass
     # mqtt_client = None  # 定义MQTT客户端为类变量
     #
     # async def connect(self):
