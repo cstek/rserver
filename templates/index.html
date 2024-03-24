@@ -67,7 +67,8 @@
 {# time #}
 <script>
     // 确保使用你的实际域名和端口替换下面的 URL
-    const ws_scheme = "ws";
+    const ws_scheme = window.location.protocol === "https:" ? "wss" : "ws";
+
     const timeSocket = new WebSocket(
         ws_scheme + '://' + window.location.host + '/ws/time/'
     );

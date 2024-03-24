@@ -3,7 +3,6 @@ from channels.generic.websocket import AsyncWebsocketConsumer
 import asyncio
 from datetime import datetime
 import json
-from asgiref.sync import async_to_sync
 import paho.mqtt.client as mqtt
 
 
