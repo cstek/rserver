@@ -52,17 +52,18 @@
 {#            document.querySelector('#messages').innerText += data.message + '\n';#}
 {#        };#}
 {#</script>#}
-<script>
-    var webSocketBridge = new channels.WebSocketBridge();
-    webSocketBridge.connect('/ws/mqtt/');
 
-    webSocketBridge.listen(function(message) {
-        var messageList = document.querySelector("#messages");
-        var messageElement = document.createElement('li');
-        messageElement.appendChild(document.createTextNode(message));
-        messageList.appendChild(messageElement);
-    });
-</script>
+{#<script>#}
+{#    var webSocketBridge = new channels.WebSocketBridge();#}
+{#    webSocketBridge.connect('/ws/mqtt/');#}
+{##}
+{#    webSocketBridge.listen(function(message) {#}
+{#        var messageList = document.querySelector("#messages");#}
+{#        var messageElement = document.createElement('li');#}
+{#        messageElement.appendChild(document.createTextNode(message));#}
+{#        messageList.appendChild(messageElement);#}
+{#    });#}
+{#</script>#}
 
 {# time #}
 <script>

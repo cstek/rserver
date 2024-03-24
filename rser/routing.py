@@ -4,7 +4,7 @@ from . import consumers
 
 
 websocket_urlpatterns = [
-    path('ws/mqtt/', consumers.MyConsumer.as_asgi()),
+    # path('ws/mqtt/', consumers.MyConsumer.as_asgi()),
     path('ws/time/', consumers.TimeConsumer.as_asgi()),
 
 ]
