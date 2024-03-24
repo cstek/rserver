@@ -15,6 +15,7 @@
     <h2>{{ msg }}</h2>
     <h3>below are mqtt msgs from esp:</h3>
     <div id="messages"></div>
+    <div id="time">等待更新...</div>
 
     <div class="user-info mt-4">
         <ul class="list-unstyled">
@@ -56,11 +57,29 @@
     webSocketBridge.connect('/ws/mqtt/');
 
     webSocketBridge.listen(function(message) {
-        var messageList = document.querySelector('#messages');
+        var messageList = document.querySelector("#messages");
         var messageElement = document.createElement('li');
         messageElement.appendChild(document.createTextNode(message));
         messageList.appendChild(messageElement);
     });
+</script>
+
+{# time #}
+<script>
+    // 确保使用你的实际域名和端口替换下面的 URL
+    const ws_scheme = "ws";
+    const timeSocket = new WebSocket(
+        ws_scheme + '://' + window.location.host + '/ws/time/'
+    );
+
+    timeSocket.onmessage = function(e) {
+        const data = JSON.parse(e.data);
+        document.querySelector('#time').innerText = data.time;
+    };
+
+    timeSocket.onclose = function(e) {
+        console.error('Time socket closed unexpectedly');
+    };
 </script>
 
 <!-- 引入Bootstrap JS 和 jQuery -->

@@ -1,5 +1,7 @@
 # consumer.py 处理 WebSocket 连接、接收消息和发送消息
 from channels.generic.websocket import AsyncWebsocketConsumer
+import asyncio
+from datetime import datetime
 import json
 from asgiref.sync import async_to_sync
 import paho.mqtt.client as mqtt
@@ -68,3 +70,19 @@ class MyConsumer(AsyncWebsocketConsumer):
     #         MyConsumer.mqtt_client.loop_stop()  # 停止MQTT客户端循环
     #         MyConsumer.mqtt_client.disconnect()  # 断开MQTT客户端连接
     #         MyConsumer.mqtt_client = None
+
+
+class TimeConsumer(AsyncWebsocketConsumer):
+    async def connect(self):
+        await self.accept()
+        while True:
+            now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+            # 发送 JSON 格式的消息
+            await self.send(json.dumps({'time': now}))
+            await asyncio.sleep(1)
+
+    async def disconnect(self, close_code):
+        pass
+
+    async def receive(self, text_data=None, bytes_data=None):
+        pass
