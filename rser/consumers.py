@@ -28,7 +28,7 @@ class MyConsumer(AsyncWebsocketConsumer):
         MyConsumer.mqtt_client.on_message = on_message
         MyConsumer.mqtt_client.connect("localhost", 1883, 60)
         MyConsumer.mqtt_client.subscribe("fromEsp")
-        MyConsumer.mqtt_client.loop_start()  # 使用loop_start而不是loop_forever
+        MyConsumer.mqtt_client.loop_forever()  # 使用loop_start而不是loop_forever
 
     async def disconnect(self, close_code):
         if MyConsumer.mqtt_client:
