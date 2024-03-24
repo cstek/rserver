@@ -6,7 +6,39 @@ import paho.mqtt.client as mqtt
 
 
 class MyConsumer(AsyncWebsocketConsumer):
-    pass
+    async def connect(self):
+        # 连接到MQTT代理服务器
+        self.mqtt_client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2)
+        self.mqtt_client.on_connect = self.on_connect
+        self.mqtt_client.on_message = self.on_message
+        self.mqtt_client.connect("localhost", 1883, 60)
+        self.mqtt_client.loop_start()
+
+        # 订阅MQTT主题
+        self.mqtt_client.subscribe("fromEsp")
+
+        await self.accept()
+
+    def on_connect(self, client, userdata, flags, rc):
+        print("Connected to MQTT broker with result code " + str(rc))
+
+    def on_message(self, client, userdata, msg):
+        # 处理MQTT消息
+        message = msg.payload.decode()
+        self.send_message(message)
+
+    async def receive(self, text_data):
+        # 在接收到前端发送的消息时，将其发布到MQTT主题
+        self.mqtt_client.publish("mqtt_topic", text_data)
+
+    async def disconnect(self, code):
+        # 断开MQTT连接
+        self.mqtt_client.disconnect()
+        self.mqtt_client.loop_stop()
+
+    def send_message(self, message):
+        # 发送消息到前端页面
+        self.send(text_data=message)
     # mqtt_client = None  # 定义MQTT客户端为类变量
     #
     # async def connect(self):

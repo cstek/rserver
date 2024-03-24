@@ -44,12 +44,23 @@
 </div>
 
 <!-- MQTT消息 -->
+{#<script>#}
+{#        const ws = new WebSocket('ws://' + window.location.host + '/ws/some_path/');#}
+{#        ws.onmessage = function(event) {#}
+{#            const data = JSON.parse(event.data);#}
+{#            document.querySelector('#messages').innerText += data.message + '\n';#}
+{#        };#}
+{#</script>#}
 <script>
-        const ws = new WebSocket('ws://' + window.location.host + '/ws/some_path/');
-        ws.onmessage = function(event) {
-            const data = JSON.parse(event.data);
-            document.querySelector('#messages').innerText += data.message + '\n';
-        };
+    var webSocketBridge = new channels.WebSocketBridge();
+    webSocketBridge.connect('/ws/mqtt/');
+
+    webSocketBridge.listen(function(message) {
+        var messageList = document.querySelector('#messages');
+        var messageElement = document.createElement('li');
+        messageElement.appendChild(document.createTextNode(message));
+        messageList.appendChild(messageElement);
+    });
 </script>
 
 <!-- 引入Bootstrap JS 和 jQuery -->
