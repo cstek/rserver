@@ -17,6 +17,8 @@ https://docs.djangoproject.com/en/5.0/howto/deployment/asgi/
 
 import os
 
+from django.urls import path
+from rser.consumers import TimeConsumer
 import rserver.routing
 from django.core.asgi import get_asgi_application
 from channels.auth import AuthMiddlewareStack
@@ -28,8 +30,8 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'rserver.settings')
 application = ProtocolTypeRouter({
     "http": get_asgi_application(),
     "websocket": AuthMiddlewareStack(
-        URLRouter(
-            rserver.routing.URLRouter,
-        )
+        URLRouter([
+            path("ws/time/", TimeConsumer.as_asgi()),
+        ])
     ),
 })
