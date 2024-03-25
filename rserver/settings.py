@@ -72,7 +72,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'rserver.wsgi.application'
-ASGI_APPLICATION = 'rserver.asgi.application'
+ASGI_APPLICATION = 'rserver.routing.application'
 
 CHANNEL_LAYERS = {
     'default': {

@@ -13,9 +13,7 @@
 <div class="container mt-5">
     <h1 class="mb-3">Student Management System Homepage</h1>
     <h2>{{ msg }}</h2>
-    <h3>below are mqtt msgs from esp:</h3>
-    <div id="messages"></div>
-    <div id="time">等待更新...</div>
+    <h1>Server Time: <span id="server-time"></span></h1>
 
     <div class="user-info mt-4">
         <ul class="list-unstyled">
@@ -44,45 +42,15 @@
     </div>
 </div>
 
-<!-- MQTT消息 -->
-{#<script>#}
-{#        const ws = new WebSocket('ws://' + window.location.host + '/ws/some_path/');#}
-{#        ws.onmessage = function(event) {#}
-{#            const data = JSON.parse(event.data);#}
-{#            document.querySelector('#messages').innerText += data.message + '\n';#}
-{#        };#}
-{#</script>#}
-
-{#<script>#}
-{#    var webSocketBridge = new channels.WebSocketBridge();#}
-{#    webSocketBridge.connect('/ws/mqtt/');#}
-{##}
-{#    webSocketBridge.listen(function(message) {#}
-{#        var messageList = document.querySelector("#messages");#}
-{#        var messageElement = document.createElement('li');#}
-{#        messageElement.appendChild(document.createTextNode(message));#}
-{#        messageList.appendChild(messageElement);#}
-{#    });#}
-{#</script>#}
-
-{# time #}
-<script>
-    // 确保使用你的实际域名和端口替换下面的 URL
-    const ws_scheme = window.location.protocol === "https:" ? "wss" : "ws";
-
-    const timeSocket = new WebSocket(
-        ws_scheme + '://' + window.location.host + '/ws/time/'
-    );
-
-    timeSocket.onmessage = function(e) {
+{#server time#}
+<script type="text/javascript">
+    const ws = new WebSocket('ws://' + window.location.host + '/ws/time/');
+    ws.onmessage = function(e) {
         const data = JSON.parse(e.data);
-        document.querySelector('#time').innerText = data.time;
-    };
-
-    timeSocket.onclose = function(e) {
-        console.error('Time socket closed unexpectedly');
+        document.getElementById('server-time').textContent = data.time;
     };
 </script>
+{#server time#}
 
 <!-- 引入Bootstrap JS 和 jQuery -->
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
